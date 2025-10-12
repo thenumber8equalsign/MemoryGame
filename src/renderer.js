@@ -171,7 +171,7 @@ function endGame(won) {
 }
 
 function showOptions() {
-  const html = `<h2 style="text-align: center">Settings</h2>
+  const html = `<h2 style="text-align: center">Options</h2>
     <button class="greenField" onclick="saveHighScore()" style="
     margin: 10px auto 10px auto;
     ">Save high score</button>
