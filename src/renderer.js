@@ -2,6 +2,7 @@
 const newRoundButton = document.getElementById("newRoundButton");
 const howToPlayButton = document.getElementById("howToPlay");
 const submitButton = document.getElementById("submitButton");
+const optionsButton = document.getElementById("optionsButton");
 
 const inputField = document.getElementById("byteInput");
 const byteDisplay = document.getElementById("byteDisplay");
@@ -10,17 +11,21 @@ const highScoreField = document.getElementById("highScore");
 const countdownField = document.getElementById("timeRemaining");
 
 newRoundButton.addEventListener("click", newRound);
-howToPlayButton.addEventListener("click", showModal);
+howToPlayButton.addEventListener("click", howToPlay);
 submitButton.addEventListener("click", submit);
+optionsButton.addEventListener("click", showOptions);
 
 // Modal
 const modal = document.getElementById("modal");
+const modalContent = document.getElementById("modalContent");
 const closeSpan = document.getElementById("closeModal");
 
 closeSpan.addEventListener("click", closeModal);
 
 // When the user clicks anywhere outside modalContent, close it
-modal.addEventListener("click", closeModal);
+modal.addEventListener("click", (event) => {
+  if (!modalContent.contains(event.target)) closeModal();
+});
 
 window.addEventListener("keydown", (event) => {
   if (event.code == "Escape") {
@@ -67,8 +72,9 @@ async function refreshConfig() {
   } else {
     highScoreField.innerHTML = `<span>High score<br />0</span>`;
   }
-
-  document.getElementById("configFileLocation").textContent = CONFIG_FILE_PATH;
+}
+function saveHighScore() {
+  window.electron.writeHighScore(highScore);
 }
 
 function newRound() {
@@ -143,10 +149,51 @@ function endGame(won) {
   highScoreField.innerHTML = h`<span>High score<br />${highScore}</span>`;
 }
 
+function showOptions() {
+  const html = `<h2 style="text-align: center">Settings</h2>
+    <button class="greenField" onclick="saveHighScore()" style="
+    margin: 10px auto 10px auto;
+    ">Save high score</button>
+    <button class="greenField" onclick="refreshConfig()" style="
+    margin: 10px auto 10px auto;
+    ">Reload configuration</button>
+    <button class="greenField" onclick="window.electron.openConfigFile()" style="
+    margin: 10px auto 10px auto;
+    ">Open configuration file in text editor</button>`;
+  closeSpan.insertAdjacentHTML("afterend", html);
+  showModal();
+}
+
+function howToPlay() {
+  const html = h`<h2 style="text-align: center">How to play</h2>
+  <p style="text-align: center">
+    1. Hit the new round button<br />
+    2. Memorize the numbers shown in the field<br />
+    3. Type them back in<br />
+    4. Hit enter<br />
+    Note: You can edit the configuration at<br /><span>${CONFIG_FILE_PATH}</span>
+    <br />
+    Also, if you break the configuration, just delete the file, the
+    program is so great that it will re-create it if it's not there.
+  </p>`;
+
+  closeSpan.insertAdjacentHTML("afterend", html);
+  showModal();
+}
+
 function showModal() {
   modal.style.display = "block";
 }
+
 function closeModal() {
+  // remove the children of modalContent, except for the x symbol
+  Array.from(modalContent.children).forEach((child) => {
+    if (child.id === closeSpan.id) {
+      return;
+    }
+    modalContent.removeChild(child); // remove every child except for the close button
+  });
+
   modal.style.display = "none";
 }
 
