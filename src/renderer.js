@@ -30,6 +30,17 @@ modal.addEventListener("click", (event) => {
 window.addEventListener("keydown", (event) => {
   if (event.code == "Escape") {
     closeModal();
+  } else if (
+    event.code == "Enter" &&
+    submitButton.getAttribute("disabled") == null
+  ) {
+    submit();
+  } else if (
+    event.code == "Enter" &&
+    submitButton.getAttribute("disabled") != null &&
+    newRoundButton.getAttribute("disabled") == null
+  ) {
+    newRound();
   }
 });
 
@@ -86,6 +97,9 @@ function newRound() {
   setTimeout(() => {
     inputField.removeAttribute("disabled");
     submitButton.removeAttribute("disabled");
+    // Focus the inputField, this makes it easier for keyboard users
+    inputField.focus();
+
     byteDisplay.value = "";
     // If the user disabled the timeout in the configuration, then don't do it
     if (CONFIG.timeout > 0) {
