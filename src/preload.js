@@ -73,17 +73,23 @@ contextBridge.exposeInMainWorld("electron", {
       try {
         config = JSON.parse(config);
       } catch (err) {
-        console.error("Config file is not valid JSON");
+        console.error(
+          "Config file is not valid JSON, a new one will be created",
+        );
         try {
           createConfig();
         } catch (err) {
           console.error("Could not create config file:", err);
           throw err;
         }
+        return configFile;
       }
 
       // Config is invalid
       if (!configValidate(config)) {
+        console.error(
+          "Config file is not a valid configuration, a new one will be generated",
+        );
         try {
           createConfig();
         } catch (err) {
