@@ -216,12 +216,20 @@ input:not(:disabled):hover {
   border: none;
   width: 80%;
   border-radius: 50px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
 #closeModal {
   color: var(--fontCol);
+  position: absolute;
   float: right;
   font-size: 28px;
   font-weight: bold;
   cursor: pointer;
+  right: 10px;
+  top: 10px;
+  margin-right: 15px;
+  margin-top: 10px;
 }
