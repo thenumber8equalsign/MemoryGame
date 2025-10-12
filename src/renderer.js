@@ -69,6 +69,7 @@ async function refreshConfig() {
 
 function refreshHighScore() {
   highScore = window.electron.getHighScore();
+  highScoreField.innerHTML = h`<span>High score<br />${highScore}</span>`;
 }
 
 function saveHighScore() {
@@ -86,19 +87,24 @@ function newRound() {
     inputField.removeAttribute("disabled");
     submitButton.removeAttribute("disabled");
     byteDisplay.value = "";
-    let timeLeft = CONFIG.timeout - 1;
-    countdownField.innerHTML = h`<span>Time remaining<br />${timeLeft + 1}</span>`;
+    // If the user disabled the timeout in the configuration, then don't do it
+    if (CONFIG.timeout > 0) {
+      let timeLeft = CONFIG.timeout - 1;
+      countdownField.innerHTML = h`<span>Time remaining<br />${timeLeft + 1}</span>`;
 
-    timerID = setInterval(() => {
-      if (timeLeft == -1) {
-        clearInterval(timerID);
-        timerID = undefined;
-        endGame(false);
-      } else {
-        countdownField.innerHTML = h`<span>Time remaining<br />${timeLeft}</span>`;
-        --timeLeft;
-      }
-    }, 1000);
+      timerID = setInterval(() => {
+        if (timeLeft == -1) {
+          clearInterval(timerID);
+          timerID = undefined;
+          endGame(false);
+        } else {
+          countdownField.innerHTML = h`<span>Time remaining<br />${timeLeft}</span>`;
+          --timeLeft;
+        }
+      }, 1000);
+    } else {
+      timerID = undefined;
+    }
   }, CONFIG.timeToMemorize);
 }
 
