@@ -15,6 +15,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "ajv": "^8.17.1",
     "electron-squirrel-startup": "^1.0.1"
   },
   "devDependencies": {
