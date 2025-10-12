@@ -10,6 +10,8 @@ const scoreField = document.getElementById("score");
 const highScoreField = document.getElementById("highScore");
 const countdownField = document.getElementById("timeRemaining");
 
+const body = document.getElementsByTagName("body")[0];
+
 newRoundButton.addEventListener("click", newRound);
 howToPlayButton.addEventListener("click", howToPlay);
 submitButton.addEventListener("click", submit);
@@ -32,13 +34,15 @@ window.addEventListener("keydown", (event) => {
     closeModal();
   } else if (
     event.code == "Enter" &&
-    submitButton.getAttribute("disabled") == null
+    submitButton.getAttribute("disabled") == null &&
+    (document.activeElement == body || document.activeElement == inputField)
   ) {
     submit();
   } else if (
     event.code == "Enter" &&
     submitButton.getAttribute("disabled") != null &&
-    newRoundButton.getAttribute("disabled") == null
+    newRoundButton.getAttribute("disabled") == null &&
+    document.activeElement == body
   ) {
     newRound();
   }
@@ -69,8 +73,7 @@ function generateString() {
 async function refreshConfig() {
   const configPath = window.electron.getConfig();
   const response = await fetch(configPath);
-  const body = await response.json();
-  CONFIG = body;
+  CONFIG = await response.json();
   Object.freeze(CONFIG);
   CONFIG_FILE_PATH = configPath;
 
@@ -194,8 +197,7 @@ function howToPlay() {
     4. Hit enter<br />
     Note: You can edit the configuration at<br /><span>${CONFIG_FILE_PATH}</span>
     <br />
-    Also, if you break the configuration, just delete the file, the
-    program is so great that it will re-create it if it's not there.
+    Also, if you break the configuration, it will be fine, as the app will automatically regenerate a configuration if it is invalid.
   </p>`;
 
   closeSpan.insertAdjacentHTML("afterend", html);
