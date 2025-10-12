@@ -43,6 +43,7 @@ let timerID; // this stores the id for the interval for the countdown, allowing 
 
 window.onload = () => {
   refreshConfig();
+  refreshHighScore();
 };
 
 function generateString() {
@@ -64,15 +65,12 @@ async function refreshConfig() {
 
   // Set the countdown text
   countdownField.innerHTML = `<span>Time remaining<br />--</span>`;
-
-  // Set the high score if there is one
-  if (CONFIG.highScore != undefined) {
-    highScore = CONFIG.highScore;
-    highScoreField.innerHTML = h`<span>High score<br />${highScore}</span>`;
-  } else {
-    highScoreField.innerHTML = `<span>High score<br />0</span>`;
-  }
 }
+
+function refreshHighScore() {
+  highScore = window.electron.getHighScore();
+}
+
 function saveHighScore() {
   window.electron.writeHighScore(highScore);
 }
