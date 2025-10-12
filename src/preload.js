@@ -10,11 +10,19 @@ ipcRenderer.invoke("getUserDataPath").then((response) => {
   userData = response;
   configFile = path.join(userData, "config.json");
 });
-const defaultConfiguration = `{
-"timeToMemorize": 1000,
-"timeout": 30,
-"length": 8
-}`;
+
+const defaultConfiguration = JSON.stringify(
+  {
+    timeToMemorize: 1000,
+    comment: "The time you have to memorize the numbers in milliseconds",
+    timeout: 30,
+    comment: "The time you have to enter the the numbers in seconds",
+    length: 8,
+    comment: "The length of the string of numbers",
+  },
+  null,
+  2,
+); // 2 spaces tab
 
 contextBridge.exposeInMainWorld("electron", {
   getConfig: async () => {
