@@ -1,6 +1,6 @@
 // See the Electron documentation for details on how to use preload scripts:
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
-const { contextBridge, ipcRenderer } = require("electron");
+const { contextBridge, ipcRenderer, shell } = require("electron");
 const fs = require("node:fs");
 const path = require("node:path");
 
@@ -57,5 +57,8 @@ contextBridge.exposeInMainWorld("electron", {
       console.error("Could not write to config file,", err);
       throw err;
     }
+  },
+  openConfigFile: () => {
+    shell.openPath(configFile);
   },
 });
