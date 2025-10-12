@@ -55,7 +55,7 @@ function generateString() {
 }
 
 async function refreshConfig() {
-  const configPath = await window.electron.getConfig();
+  const configPath = window.electron.getConfig();
   const response = await fetch(configPath);
   const body = await response.json();
   CONFIG = body;
@@ -159,7 +159,10 @@ function showOptions() {
     ">Reload configuration</button>
     <button class="greenField" onclick="window.electron.openConfigFile()" style="
     margin: 10px auto 10px auto;
-    ">Open configuration file in text editor</button>`;
+    ">Open configuration file in text editor</button>
+    <button class="greenField" onclick="window.electron.resetConfig()" style="
+    margin: 10px auto 10px auto;
+    ">Reset configuration to default</button>`;
   closeSpan.insertAdjacentHTML("afterend", html);
   showModal();
 }
