@@ -127,6 +127,7 @@ contextBridge.exposeInMainWorld("electron", {
       highScore.highScore == null ||
       !Number.isInteger(highScore.highScore)
     ) {
+      console.error("High score file is not valid");
       return 0;
     }
 
