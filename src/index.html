@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="index.css" />
+    <script defer src="renderer.js"></script>
+  </head>
+  <body>
+    <div class="containerDiv">
+      <div class="top">
+        <h1>Memory Game</h1>
+        <div class="howToPlayContainer">
+          <button class="greenField" id="howToPlay">How to play</button>
+        </div>
+      </div>
+      <div class="mainGame">
+        <div class="leftSide gameContainer">
+          <div class="gameField">
+            <input
+              id="byteDisplay"
+              placeholder="The numbers will be shown here"
+              disabled
+            />
+          </div>
+          <div id="inputContainer" class="gameField">
+            <input
+              id="byteInput"
+              placeholder="Type the numbers you saw here"
+              disabled
+            />
+            <button id="submitButton" class="greenField" disabled>Enter</button>
+          </div>
+          <div class="gameField">
+            <button id="newRoundButton" class="greenField">New round</button>
+          </div>
+        </div>
+        <div class="rightSide gameContainer">
+          <div class="gameField" id="timeRemaining">
+            <span>Time remaining<br />--</span>
+          </div>
+          <div class="gameField" id="score">
+            <span>Score<br />0</span>
+          </div>
+          <div class="gameField" id="highScore">
+            <span>High score<br />0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="modal">
+      <div id="modalContent">
+        <span id="closeModal">&times;</span>
+        <h2 style="text-align: center">How to play</h2>
+        <p style="text-align: center">
+          1. Hit the new round button<br />
+          2. Memorize the numbers shown in the field<br />
+          3. Type them back in<br />
+          4. Hit enter<br />
+          Note: You can edit the configuration at<br /><span
+            id="configFileLocation"
+          ></span>
+          <br />
+          Also, if you break the configuration, just delete the file, the
+          program is so great that it will re-create it if it's not there.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
