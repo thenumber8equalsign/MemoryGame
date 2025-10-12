@@ -19,10 +19,9 @@ const closeSpan = document.getElementById("closeModal");
 
 closeSpan.addEventListener("click", closeModal);
 
-// When the user clicks anywhere outside the modal, close it
-window.addEventListener("click", (event) => {
-  if (event.target != howToPlayButton) closeModal();
-});
+// When the user clicks anywhere outside modalContent, close it
+modal.addEventListener("click", closeModal);
+
 window.addEventListener("keydown", (event) => {
   if (event.code == "Escape") {
     closeModal();
