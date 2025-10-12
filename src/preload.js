@@ -6,59 +6,91 @@ const path = require("node:path");
 
 let userData;
 let configFile;
+let highScoreFile;
 ipcRenderer.invoke("getUserDataPath").then((response) => {
   userData = response;
   configFile = path.join(userData, "config.json");
+  highScoreFile = path.join(userData, "highScore.json");
 });
 
 const defaultConfiguration = JSON.stringify(
   {
     timeToMemorize: 1000,
-    comment: "The time you have to memorize the numbers in milliseconds",
+    comment1: "The time you have to memorize the numbers in milliseconds",
     timeout: 30,
-    comment: "The time you have to enter the the numbers in seconds",
+    comment2: "The time you have to enter the the numbers in seconds",
     length: 8,
-    comment: "The length of the string of numbers",
+    comment3: "The length of the string of numbers",
   },
   null,
   2,
 ); // 2 spaces tab
 
+function createConfig() {
+  console.log("Creating config file at", configFile);
+  try {
+    fs.writeFileSync(configFile, defaultConfiguration);
+  } catch (err) {
+    throw err;
+  }
+}
+
 contextBridge.exposeInMainWorld("electron", {
-  getConfig: async () => {
+  createConfig: createConfig,
+  getConfig: () => {
     if (!fs.existsSync(configFile)) {
-      // config file does not exist
-      console.log("Creating config file at", configFile);
       try {
-        fs.writeFileSync(configFile, defaultConfiguration);
+        createConfig();
       } catch (err) {
-        console.error("Error, could not create config file:", err);
+        console.error("Could not create config file:", err);
         throw err;
       }
     }
     return configFile;
   },
-  writeHighScore: (highScore) => {
-    let config;
+  getHighScore: () => {
+    // If the file does not exist, return 0
+    if (!fs.existsSync(highScoreFile)) return 0;
+
+    let highScore;
     try {
-      config = fs.readFileSync(configFile, "utf-8");
+      highScore = fs.readFileSync(highScoreFile, "utf-8");
     } catch (err) {
-      console.error("Could not read config file,", err);
+      console.error("Could not read from config file:", err);
       throw err;
     }
-
-    config = JSON.parse(config);
-    config.highScore = highScore;
-    config = JSON.stringify(config, null, 2); // 2 spaces for tab
+    return highScore;
+  },
+  writeHighScore: (highScore) => {
+    let highScoreBody = JSON.stringify(
+      {
+        highScore: highScore,
+      },
+      null,
+      2,
+    );
 
     try {
-      fs.writeFileSync(configFile, config);
+      fs.writeFileSync(highScoreFile, highScoreBody);
     } catch (err) {
-      console.error("Could not write to config file,", err);
+      console.error("Could not write to config file:", err);
       throw err;
     }
   },
   openConfigFile: () => {
     shell.openPath(configFile);
+  },
+  resetConfig: async () => {
+    const result = await ipcRenderer.invoke("resetConfigMessage");
+    // 0 is the id of the cancel button, 1 is the id of the yes button
+
+    if (result === 1) {
+      try {
+        createConfig();
+      } catch (err) {
+        console.error("Could not create config file:", err);
+        throw err;
+      }
+    }
   },
 });
