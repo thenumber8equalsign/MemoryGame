@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const path = require("node:path");
 let mainWindow;
 
@@ -56,4 +56,12 @@ app.on("window-all-closed", () => {
 // code. You can also put them in separate files and import them here.
 ipcMain.handle("getUserDataPath", () => {
   return app.getPath("userData");
+});
+
+ipcMain.handle("resetConfigMessage", () => {
+  return dialog.showMessageBoxSync({
+    message: "Are you sure you want to reset the configuration file?",
+    title: "Reset configuration",
+    buttons: ["Cancel", "Yes"],
+  });
 });
