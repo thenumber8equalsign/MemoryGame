@@ -171,6 +171,8 @@ function endGame(won) {
 }
 
 function showOptions() {
+  closeModal(); // Close the modal in case there is already stuff in it
+
   const html = `<h2 style="text-align: center">Options</h2>
     <button class="greenField" onclick="saveHighScore()" style="
     margin: 10px auto 10px auto;
@@ -189,6 +191,8 @@ function showOptions() {
 }
 
 function howToPlay() {
+  closeModal(); // Close the modal in case there is already stuff in it
+
   const html = h`<h2 style="text-align: center">How to play</h2>
   <p style="text-align: center">
     1. Hit the new round button<br />
