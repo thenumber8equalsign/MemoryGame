@@ -126,14 +126,12 @@ function newRound() {
 }
 
 function submit() {
-  if (timerID !== undefined) {
-    // Only submit if there is a round going on
-    const submittedValue = inputField.value.trim();
-    if (submittedValue === answer) {
-      endGame(true);
-    } else {
-      endGame(false);
-    }
+  // Only submit if there is a round going on
+  const submittedValue = inputField.value.trim();
+  if (submittedValue === answer) {
+    endGame(true);
+  } else {
+    endGame(false);
   }
 }
 
