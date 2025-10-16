@@ -126,7 +126,6 @@ function newRound() {
 }
 
 function submit() {
-  // Only submit if there is a round going on
   const submittedValue = inputField.value.trim();
   if (submittedValue === answer) {
     endGame(true);
