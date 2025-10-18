@@ -64,8 +64,11 @@ window.onload = () => {
 function generateString() {
   let str = "";
   for (let i = 0; i < CONFIG.length; ++i) {
-    let bit = Math.floor(Math.random() * 2); // [0, 1] or [0, 2) in interval notation
-    str += bit.toString();
+    if (CONFIG.allowNonBinaryDigits) {
+      str += Math.floor(Math.random() * 10).toString(); // Generates a digit within [0, 9]
+    } else {
+      str += Math.floor(Math.random() * 2).toString(); // Generates either 0 or 1
+    }
   }
   return str;
 }
