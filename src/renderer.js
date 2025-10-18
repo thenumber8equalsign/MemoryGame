@@ -205,7 +205,10 @@ function showOptions() {
     ">Open configuration file in text editor</button>
     <button class="greenField" onclick="window.electron.resetConfig()" style="
     margin: 10px auto 10px auto;
-    ">Reset configuration to default</button>`;
+    ">Reset configuration to default</button>
+    <button class="greenField" onclick="changeConfig()" style="
+    margin: 10px auto 10px auto;
+    ">Change configuration</button>`;
   closeSpan.insertAdjacentHTML("afterend", html);
   showModal();
 }
@@ -229,7 +232,7 @@ function howToPlay() {
 }
 
 function showModal() {
-  modal.style.display = "block";
+  modal.style.display = "flex";
 }
 
 function closeModal() {
