@@ -298,12 +298,12 @@ function saveConfig() {
   const obj = Object.fromEntries(formData);
 
   // Now handle the checkboxes manually because for some reason they don't work automatically
-  const useNonBinaryDigitsCheckbox = document.getElementById(
+  const allowNonBinaryDigitsCheckbox = document.getElementById(
     "allowNonBinaryDigits",
   );
   const useCustomCharsCheckbox = document.getElementById("useCustomChars");
 
-  obj.useNonBinaryDigits = useNonBinaryDigitsCheckbox.checked;
+  obj.allowNonBinaryDigits = allowNonBinaryDigitsCheckbox.checked;
   obj.useCustomChars = useCustomCharsCheckbox.checked;
   console.log(obj);
   // Now change length, timeToMemorize, and timeout to be numbers
