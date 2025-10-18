@@ -316,7 +316,14 @@ function saveConfig() {
     return;
   }
 
-  window.electron.updateConfig(obj);
+  let success = false;
+  try {
+    window.electron.updateConfig(obj);
+    success = true;
+  } catch (err) {}
+  if (success) {
+    closeModal();
+  }
 }
 
 function showModal() {
