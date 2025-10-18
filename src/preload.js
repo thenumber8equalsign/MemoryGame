@@ -46,9 +46,7 @@ const configSchema = {
     length: { type: "number" },
     allowNonBinaryDigits: { type: "boolean" },
     useCustomChars: { type: "boolean" },
-    customChars: {
-      type: "string",
-    },
+    customChars: { type: "string" },
   },
   required: [
     "timeToMemorize",
