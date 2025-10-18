@@ -25,6 +25,8 @@ const defaultConfiguration = JSON.stringify(
       "The time you have to enter the the numbers in seconds, 0 or less to disable",
     length: 8,
     comment3: "The length of the string of numbers",
+    allowNonBinaryDigits: false,
+    comment4: "Whether or not to use digits other than 0 or 1",
   },
   null,
   2,
@@ -36,8 +38,9 @@ const configSchema = {
     timeToMemorize: { type: "number" },
     timeout: { type: "number" },
     length: { type: "number" },
+    allowNonBinaryDigits: { type: "boolean" },
   },
-  required: ["timeToMemorize", "timeout", "length"],
+  required: ["timeToMemorize", "timeout", "length", "allowNonBinaryDigits"],
 };
 const configValidate = ajv.compile(configSchema);
 
