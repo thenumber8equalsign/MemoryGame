@@ -132,16 +132,15 @@ function newRound() {
     // If the user disabled the timeout in the configuration, then don't do it
     if (CONFIG.timeout > 0) {
       let timeLeft = CONFIG.timeout - 1;
-      countdownField.innerHTML = h`<span>Time remaining<br />${timeLeft + 1}</span>`;
+      countdownField.innerHTML = h`<span>Time remaining<br />${timeLeft}</span>`;
 
       timerID = setInterval(() => {
+        --timeLeft;
+        countdownField.innerHTML = h`<span>Time remaining<br />${timeLeft}</span>`;
         if (timeLeft == -1) {
           clearInterval(timerID);
           timerID = undefined;
           endGame(false);
-        } else {
-          countdownField.innerHTML = h`<span>Time remaining<br />${timeLeft}</span>`;
-          --timeLeft;
         }
       }, 1000);
     } else {
