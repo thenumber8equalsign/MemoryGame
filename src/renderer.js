@@ -70,8 +70,14 @@ function generateString() {
   // If the configuration tells us to use the custom characters, use them
   if (CONFIG.useCustomChars) {
     for (let i = 0; i < CONFIG.length; ++i) {
-      let index = Math.floor(Math.random() * CONFIG.customChars.length);
-      str += CONFIG.customChars[index];
+      if (CONFIG.customChars.length == 0) {
+        // use any ascii character, range [33, 126] because 127 is delete and 32 is space, and the rest are control characters
+        // we need to generate a random integer within [0, 93] because 126 - 33 = 93, and then add an offset of 33
+        str += String.fromCharCode(Math.floor(Math.random() * 94) + 33);
+      } else {
+        let index = Math.floor(Math.random() * CONFIG.customChars.length);
+        str += CONFIG.customChars[index];
+      }
     }
   } else {
     for (let i = 0; i < CONFIG.length; ++i) {
