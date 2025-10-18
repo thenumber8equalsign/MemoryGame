@@ -30,7 +30,7 @@ const defaultConfiguration = JSON.stringify(
     useCustomChars: false,
     comment5:
       "Wheter or not to select characters or digits from the array below",
-    customChars: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+    customChars: "0123456789",
     comment6:
       "The characters to choose from, only used if useCustomChars is set to true, set to [] to use any ASCII character",
   },
@@ -47,12 +47,7 @@ const configSchema = {
     allowNonBinaryDigits: { type: "boolean" },
     useCustomChars: { type: "boolean" },
     customChars: {
-      type: "array",
-      items: {
-        type: "string",
-        minLength: 1,
-        maxLength: 1,
-      },
+      type: "string",
     },
   },
   required: [

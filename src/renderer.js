@@ -76,7 +76,7 @@ function generateString() {
         str += String.fromCharCode(Math.floor(Math.random() * 94) + 33);
       } else {
         let index = Math.floor(Math.random() * CONFIG.customChars.length);
-        str += CONFIG.customChars[index];
+        str += CONFIG.customChars.charAt(index);
       }
     }
   } else {
