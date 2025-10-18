@@ -168,4 +168,11 @@ contextBridge.exposeInMainWorld("electron", {
       }
     }
   },
+  onConfigChange: (callbackFunction) => {
+    fs.watch(configFile, (eventType, filename) => {
+      if (eventType == "change") {
+        callbackFunction();
+      }
+    });
+  },
 });
