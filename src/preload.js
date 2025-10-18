@@ -190,4 +190,19 @@ contextBridge.exposeInMainWorld("electron", {
       }
     });
   },
+  updateConfig: (newConfig) => {
+    if (!configValidate(newConfig)) {
+      // If the new configuration is invalid, console error that and don't do anything else (this should not happen unless the user messes with inspect element)
+      console.error("The new configuration is invalid");
+      return;
+    }
+
+    newConfig = JSON.stringify(newConfig, null, 2); // 2 spaces indent
+    try {
+      fs.writeFileSync(configFile, newConfig);
+    } catch (err) {
+      console.error("Could not update config file:", err);
+      throw err;
+    }
+  },
 });
