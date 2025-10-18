@@ -202,6 +202,7 @@ contextBridge.exposeInMainWorld("electron", {
       fs.writeFileSync(configFile, newConfig);
     } catch (err) {
       console.error("Could not update config file:", err);
+      ipcRenderer.send("showErrorBox", "Could not update config file:", err);
       throw err;
     }
   },
