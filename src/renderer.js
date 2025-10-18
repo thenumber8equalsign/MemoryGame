@@ -26,7 +26,9 @@ closeSpan.addEventListener("click", closeModal);
 
 // When the user clicks anywhere outside modalContent, close it
 modal.addEventListener("click", (event) => {
-  if (!modalContent.contains(event.target)) closeModal();
+  if (!modalContent.contains(event.target)) {
+    closeModal();
+  }
 });
 
 window.addEventListener("keydown", (event) => {
@@ -206,7 +208,7 @@ function showOptions() {
     <button class="greenField" onclick="window.electron.resetConfig()" style="
     margin: 10px auto 10px auto;
     ">Reset configuration to default</button>
-    <button class="greenField" onclick="changeConfig()" style="
+    <button class="greenField" onclick="changeConfig(event)" style="
     margin: 10px auto 10px auto;
     ">Change configuration</button>`;
   closeSpan.insertAdjacentHTML("afterend", html);
@@ -231,11 +233,102 @@ function howToPlay() {
   showModal();
 }
 
+function changeConfig(event) {
+  clearModal(); // We will use the modal for the menu
+  const html = `<h2 style="text-align: center">Configure game</h2>
+    <form id="configChangeForm" style="
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    row-gap: 10px;
+    ">
+      <label for="timeToMemorize"><span title="The time you have to memorize the characters, in milliseconds">&#x24D8;</span> Time to memorize</label>
+      <input id="timeToMemorize" name="timeToMemorize" style="width: 80%;" type="number" min="1" required/>
+      <label for="timeout"><span title="The amount of time you have to type back in the characters (0 or less to disable), in seconds">&#x24D8;</span> Timeout</label>
+      <input id="timeout" name="timeout" style="width: 80%;" type="number" required/>
+      <label for="length"><span title="The length of string that is displayed">&#x24D8;</span> Length</label>
+      <input id="length" name="length" style="width: 80%;" type="number" min="1" required/>
+      <label for="allowNonBinaryDigits"><span title="Whether or not to use digits other than 0 or 1">&#x24D8;</span> Use non-binary digits</label>
+      <label class="customCheckbox">
+        <input id="allowNonBinaryDigits" name="allowNonBinaryDigits" type="checkbox" />
+        <span class="checkmark"></span>
+      </label>
+      <label for="useCustomChars"><span title="Whether or not to use characters from the list below">&#x24D8;</span> Use custom characters</label>
+      <label class="customCheckbox">
+        <input id="useCustomChars" name="useCustomChars" type="checkbox" />
+        <span class="checkmark"></span>
+      </label>
+      <label for="customChars"><span title="The characters to choose from, only used if &quot;Use custom characters&quot; is checked\nMake empty to use any ASCII character within [33, 126]\nType in every character here at once without seperation">&#x24D8;</span> Custom characters</label>
+      <input id="customChars" name="customChars" style="width: 80%" />
+      <div style="display: flex; justify-content: center; align-items: center; grid-column: 1 / -1">
+      <button type="submit" class="greenField">Save</button>
+      </div>
+      </form>`;
+  closeSpan.insertAdjacentHTML("afterend", html);
+  showModal();
+  if (event && event.stopPropagation) {
+    event.stopPropagation();
+  }
+
+  const form = document.getElementById("configChangeForm");
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    if (form.reportValidity()) {
+      saveConfig();
+    }
+  });
+
+  // Populate the form with the current values
+  document.getElementById("timeToMemorize").value = CONFIG.timeToMemorize;
+  document.getElementById("timeout").value = CONFIG.timeout;
+  document.getElementById("length").value = CONFIG.length;
+  document.getElementById("allowNonBinaryDigits").checked =
+    CONFIG.allowNonBinaryDigits;
+  document.getElementById("useCustomChars").checked = CONFIG.useCustomChars;
+  document.getElementById("customChars").value = CONFIG.customChars;
+}
+
+function saveConfig() {
+  const form = document.getElementById("configChangeForm");
+  const formData = new FormData(form);
+  const obj = Object.fromEntries(formData);
+
+  // Now handle the checkboxes manually because for some reason they don't work automatically
+  const useNonBinaryDigitsCheckbox = document.getElementById(
+    "allowNonBinaryDigits",
+  );
+  const useCustomCharsCheckbox = document.getElementById("useCustomChars");
+
+  obj.useNonBinaryDigits = useNonBinaryDigitsCheckbox.checked;
+  obj.useCustomChars = useCustomCharsCheckbox.checked;
+  console.log(obj);
+  // Now change length, timeToMemorize, and timeout to be numbers
+  try {
+    obj.length = parseInt(obj.length);
+    obj.timeToMemorize = parseInt(obj.timeToMemorize);
+    obj.timeout = parseInt(obj.timeout);
+  } catch (err) {
+    console.error("There was an error when parsing the ints", err);
+    return;
+  }
+
+  window.electron.updateConfig(obj);
+}
+
 function showModal() {
   modal.style.display = "flex";
 }
 
 function closeModal() {
+  clearModal();
+  modal.style.display = "none";
+}
+
+function clearModal() {
   // remove the children of modalContent, except for the x symbol
   Array.from(modalContent.children).forEach((child) => {
     if (child.id === closeSpan.id) {
@@ -243,8 +336,6 @@ function closeModal() {
     }
     modalContent.removeChild(child); // remove every child except for the close button
   });
-
-  modal.style.display = "none";
 }
 
 function escapeHTML(str) {
