@@ -61,7 +61,7 @@ window.onload = () => {
   refreshHighScore();
   window.electron.onConfigChange(() => {
     console.log("Configuration changed");
-    refreshConfig();
+    refreshConfig(false); // Don't reset the timeout text because a round may or may not be going on
   });
 };
 
@@ -77,7 +77,7 @@ function generateString() {
   return str;
 }
 
-async function refreshConfig() {
+async function refreshConfig(resetTimerText = true) {
   const configPath = window.electron.getConfig();
   const response = await fetch(configPath);
   CONFIG = await response.json();
@@ -85,7 +85,9 @@ async function refreshConfig() {
   CONFIG_FILE_PATH = configPath;
 
   // Set the countdown text
-  countdownField.innerHTML = `<span>Time remaining<br />--</span>`;
+  if (resetTimerText) {
+    countdownField.innerHTML = `<span>Time remaining<br />--</span>`;
+  }
 }
 
 function refreshHighScore() {
