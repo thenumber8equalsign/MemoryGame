@@ -27,6 +27,12 @@ const defaultConfiguration = JSON.stringify(
     comment3: "The length of the string of numbers",
     allowNonBinaryDigits: false,
     comment4: "Whether or not to use digits other than 0 or 1",
+    useCustomChars: false,
+    comment5:
+      "Wheter or not to select characters or digits from the array below",
+    customChars: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+    comment6:
+      "The characters to choose from, only used if useCustomChars is set to true, set to [] to use any ASCII character",
   },
   null,
   2,
@@ -39,8 +45,24 @@ const configSchema = {
     timeout: { type: "number" },
     length: { type: "number" },
     allowNonBinaryDigits: { type: "boolean" },
+    useCustomChars: { type: "boolean" },
+    customChars: {
+      type: "array",
+      items: {
+        type: "string",
+        minLength: 1,
+        maxLength: 1,
+      },
+    },
   },
-  required: ["timeToMemorize", "timeout", "length", "allowNonBinaryDigits"],
+  required: [
+    "timeToMemorize",
+    "timeout",
+    "length",
+    "allowNonBinaryDigits",
+    "useCustomChars",
+    "customChars",
+  ],
 };
 const configValidate = ajv.compile(configSchema);
 
