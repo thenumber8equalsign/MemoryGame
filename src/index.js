@@ -65,3 +65,7 @@ ipcMain.handle("resetConfigMessage", () => {
     buttons: ["Cancel", "Yes"],
   });
 });
+
+ipcMain.on("showErrorBox", (event, message, error) => {
+  dialog.showErrorBox("Error", message + "\n" + error);
+});
