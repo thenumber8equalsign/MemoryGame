@@ -67,11 +67,19 @@ window.onload = () => {
 
 function generateString() {
   let str = "";
-  for (let i = 0; i < CONFIG.length; ++i) {
-    if (CONFIG.allowNonBinaryDigits) {
-      str += Math.floor(Math.random() * 10).toString(); // Generates a digit within [0, 9]
-    } else {
-      str += Math.floor(Math.random() * 2).toString(); // Generates either 0 or 1
+  // If the configuration tells us to use the custom characters, use them
+  if (CONFIG.useCustomChars) {
+    for (let i = 0; i < CONFIG.length; ++i) {
+      let index = Math.floor(Math.random() * CONFIG.customChars.length);
+      str += CONFIG.customChars[index];
+    }
+  } else {
+    for (let i = 0; i < CONFIG.length; ++i) {
+      if (CONFIG.allowNonBinaryDigits) {
+        str += Math.floor(Math.random() * 10).toString(); // Generates a digit within [0, 9]
+      } else {
+        str += Math.floor(Math.random() * 2).toString(); // Generates either 0 or 1
+      }
     }
   }
   return str;
