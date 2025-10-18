@@ -199,6 +199,8 @@ input:not(:disabled):hover {
 
 #modal {
   display: none;
+  align-items: center;
+  justify-content: center;
   position: fixed;
   z-index: 1;
   left: 0;
@@ -211,7 +213,6 @@ input:not(:disabled):hover {
 
 #modalContent {
   background-color: var(--darkBg);
-  margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
   border: none;
   width: 80%;
