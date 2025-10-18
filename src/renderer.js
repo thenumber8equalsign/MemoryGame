@@ -59,6 +59,10 @@ let timerID; // this stores the id for the interval for the countdown, allowing 
 window.onload = () => {
   refreshConfig();
   refreshHighScore();
+  window.electron.onConfigChange(() => {
+    console.log("Configuration changed");
+    refreshConfig();
+  });
 };
 
 function generateString() {
