@@ -289,3 +289,8 @@ input:not(:disabled):hover {
   border-width: 0 3px 3px 0;
   transform: rotate(45deg);
 }
+
+label:hover + label.customCheckbox .checkmark {
+  transform: translateY(var(--buttonDisplacement));
+  box-shadow: 0 calc(var(--buttonDisplacement) * -1) 10px var(--buttonBoxShadow);
+}
